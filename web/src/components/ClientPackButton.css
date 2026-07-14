@@ -1,0 +1,30 @@
+.client-pack {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  border: 1px solid #dbeafe;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  transition: box-shadow var(--transition);
+}
+
+.client-pack:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.client-pack-info h3 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.client-pack-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+  max-width: 520px;
+}

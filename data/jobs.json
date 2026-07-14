@@ -1,0 +1,142 @@
+[
+  {
+    "id": "job_001",
+    "title": "Senior Backend Engineer",
+    "department": "Engineering",
+    "level": "Senior",
+    "status": "open",
+    "location": "Remote",
+    "candidate_count": 4,
+    "description": "We are looking for a Senior Backend Engineer to design and build scalable APIs and data services. You will own core platform features, mentor junior engineers, and partner with product on technical roadmap decisions.\n\nKey responsibilities:\n- Build RESTful services in Python\n- Optimize PostgreSQL queries and data models\n- Maintain high-availability production systems\n- Review code and mentor junior engineers\n\nExperience with distributed systems, AWS, and Django is a plus. You should communicate clearly with product and design partners and thrive in a remote-first environment."
+  },
+  {
+    "id": "job_002",
+    "title": "Product Manager",
+    "department": "Product",
+    "level": "Senior",
+    "status": "open",
+    "location": "New York, NY",
+    "candidate_count": 2,
+    "description": "Join our Product team to define and deliver features that improve the recruiter and hiring manager experience. You will gather requirements, write specs, and work closely with engineering and design.\n\nIdeal candidates have experience shipping B2B SaaS products, strong stakeholder communication skills, and a data-informed approach to prioritization."
+  },
+  {
+    "id": "job_003",
+    "title": "Frontend Developer",
+    "department": "Engineering",
+    "level": "Mid-Level",
+    "status": "paused",
+    "location": "San Francisco, CA",
+    "candidate_count": 0,
+    "description": "Build polished, accessible user interfaces for our talent acquisition platform. You will implement designs in React, collaborate on component architecture, and improve frontend performance.\n\nWe value strong TypeScript skills, attention to UX detail, and experience with modern build tooling."
+  },
+  {
+    "id": "job_004",
+    "title": "Data Analyst",
+    "department": "Analytics",
+    "level": "Junior",
+    "status": "open",
+    "location": "Remote",
+    "candidate_count": 1,
+    "description": "Support the recruiting operations team with reporting, dashboards, and ad-hoc analysis. You will work with ATS and pipeline data to surface hiring funnel insights.\n\nLooking for SQL proficiency, comfort with spreadsheet modeling, and clear written communication."
+  },
+  {
+    "id": "job_005",
+    "title": "DevOps Engineer",
+    "department": "Engineering",
+    "level": "Senior",
+    "status": "open",
+    "location": "Austin, TX",
+    "candidate_count": 0,
+    "description": "Own CI/CD pipelines, infrastructure as code, and observability for production services.\n\nKey responsibilities:\n- Maintain Terraform modules and AWS infrastructure\n- Improve Kubernetes deployments and monitoring\n- Reduce deployment toil with safer automation\n\nExperience with AWS, Kubernetes, and Terraform is required."
+  },
+  {
+    "id": "job_006",
+    "title": "UX Designer",
+    "department": "Design",
+    "level": "Mid-Level",
+    "status": "open",
+    "location": "Chicago, IL",
+    "candidate_count": 0,
+    "description": "Design intuitive workflows for recruiters screening and scheduling candidates. You will produce wireframes, prototypes, and collaborate with engineering on implementation.\n\nPortfolio demonstrating enterprise or workflow-heavy products is preferred."
+  },
+  {
+    "id": "job_007",
+    "title": "Machine Learning Engineer",
+    "department": "Engineering",
+    "level": "Senior",
+    "status": "open",
+    "location": "Remote",
+    "candidate_count": 0,
+    "description": "Build and deploy ML models that improve candidate matching, resume parsing, and hiring recommendations. You will own the model lifecycle from experimentation to production monitoring.\n\nKey responsibilities:\n- Train and evaluate ranking and classification models\n- Build feature pipelines for candidate and job data\n- Partner with backend engineers on inference APIs\n\nExperience with Python, scikit-learn or PyTorch, and MLOps tooling is required."
+  },
+  {
+    "id": "job_008",
+    "title": "Technical Recruiter",
+    "department": "Talent",
+    "level": "Mid-Level",
+    "status": "open",
+    "location": "Remote",
+    "candidate_count": 0,
+    "description": "Source and screen technical candidates for engineering and product roles. You will partner with hiring managers, manage pipeline stages, and improve time-to-fill metrics.\n\nIdeal candidates have experience recruiting for software teams, strong Boolean search skills, and clear written communication with candidates and stakeholders."
+  },
+  {
+    "id": "job_009",
+    "title": "Customer Success Manager",
+    "department": "Sales",
+    "level": "Senior",
+    "status": "open",
+    "location": "Boston, MA",
+    "candidate_count": 0,
+    "description": "Own post-sale relationships with enterprise recruiting teams. You will drive onboarding, adoption, renewals, and expansion across TalentFlow accounts.\n\nKey responsibilities:\n- Lead QBRs and success planning with HR and talent leaders\n- Identify upsell opportunities based on usage data\n- Coordinate with product and support on escalations\n\nB2B SaaS customer success experience is strongly preferred."
+  },
+  {
+    "id": "job_010",
+    "title": "Security Engineer",
+    "department": "Engineering",
+    "level": "Senior",
+    "status": "paused",
+    "location": "Denver, CO",
+    "candidate_count": 0,
+    "description": "Protect candidate and customer data across our platform. You will lead security reviews, vulnerability management, and compliance initiatives.\n\nResponsibilities include threat modeling, penetration test remediation, and partnering with DevOps on secure infrastructure patterns.\n\nExperience with cloud security, OWASP, and SOC 2 programs is a plus."
+  },
+  {
+    "id": "job_011",
+    "title": "AI Product Manager",
+    "department": "Product",
+    "level": "Senior",
+    "status": "open",
+    "location": "San Francisco, CA",
+    "candidate_count": 0,
+    "description": "Define the roadmap for AI-powered recruiting features including candidate matching, resume intelligence, and agent-assisted workflows. You will translate model capabilities into user-facing product experiences.\n\nKey responsibilities:\n- Prioritize GenAI features with engineering and design\n- Define success metrics for model-assisted hiring workflows\n- Partner with legal and security on responsible AI guardrails\n\nExperience shipping AI or ML products in B2B SaaS is strongly preferred."
+  },
+  {
+    "id": "job_012",
+    "title": "GenAI Engineer",
+    "department": "Engineering",
+    "level": "Senior",
+    "status": "open",
+    "location": "Remote",
+    "candidate_count": 0,
+    "description": "Build LLM-powered systems for resume extraction, candidate summarization, and recruiter copilots. You will design prompts, retrieval pipelines, and evaluation harnesses for production AI features.\n\nKey responsibilities:\n- Integrate foundation models with RAG over candidate and job data\n- Build guardrails against prompt injection and hallucinations\n- Optimize latency, cost, and quality of inference endpoints\n\nStrong Python skills and hands-on experience with OpenAI, Anthropic, or open-weight models required."
+  },
+  {
+    "id": "job_013",
+    "title": "AI Research Scientist",
+    "department": "Engineering",
+    "level": "Senior",
+    "status": "open",
+    "location": "Seattle, WA",
+    "candidate_count": 0,
+    "description": "Advance the science behind TalentFlow's matching and ranking systems. You will experiment with new architectures, publish internal research, and mentor engineers on model development.\n\nFocus areas include representation learning for resumes, fairness in hiring models, and evaluation methodology for recruiter-facing AI.\n\nPh.D. or equivalent research experience in ML, NLP, or related fields preferred."
+  },
+  {
+    "id": "job_014",
+    "title": "AI Solutions Engineer",
+    "department": "Customer Success",
+    "level": "Mid-Level",
+    "status": "open",
+    "location": "New York, NY",
+    "candidate_count": 0,
+    "description": "Help enterprise customers adopt TalentFlow's AI features successfully. You will run pilots, configure copilot workflows, and train recruiting teams on responsible AI usage.\n\nKey responsibilities:\n- Lead technical onboarding for AI-powered screening tools\n- Customize prompts and integrations for customer ATS stacks\n- Gather feedback and partner with product on feature requests\n\nBackground in solutions engineering, recruiting tech, or applied AI is ideal."
+  }
+]

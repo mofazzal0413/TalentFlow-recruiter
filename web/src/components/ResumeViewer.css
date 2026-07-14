@@ -1,0 +1,181 @@
+.resume-viewer {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.resume-viewer:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #dbeafe;
+}
+
+.resume-viewer-header {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.resume-toggle {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #fafafa;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+.resume-toggle:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.resume-toggle-name {
+  color: var(--color-text);
+}
+
+.resume-toggle-action {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.resume-viewer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-left: 1px solid var(--color-border);
+  background: #fafafa;
+}
+
+.resume-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.resume-status--idle {
+  color: var(--color-text-muted);
+}
+
+.resume-status--extracting {
+  color: var(--color-primary);
+}
+
+.resume-status--complete {
+  color: var(--color-success);
+}
+
+.resume-status--warning {
+  color: var(--color-warning);
+}
+
+.resume-status--error {
+  color: var(--color-danger);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.resume-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 12px;
+  background: #fafafa;
+}
+
+.badge-danger {
+  background: #fef2f2;
+  color: var(--color-danger);
+}
+
+.resume-content {
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.resume-content section {
+  margin-top: 16px;
+}
+
+.resume-raw-text {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #f9fafb;
+  font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.resume-validation-error {
+  margin: 0 16px 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: var(--color-danger);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.resume-content h3 {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.resume-format {
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--color-primary);
+}
+
+.resume-content p,
+.resume-content ul {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.resume-content ul {
+  padding-left: 18px;
+}
+
+.resume-content li + li {
+  margin-top: 8px;
+}
+
+.resume-progress {
+  margin: 0 0 16px;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.resume-progress strong {
+  color: var(--color-text);
+}

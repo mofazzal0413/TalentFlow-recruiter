@@ -1,0 +1,32 @@
+{
+  "entries": [
+    {
+      "id": "fb_001",
+      "job_id": "job_001",
+      "candidate_id": "cand_002",
+      "candidate_name": "Marcus Lee",
+      "scorecard": {
+        "technical": 4,
+        "communication": 3
+      },
+      "comment": "Phone screen notes suggest stronger PostgreSQL exposure than resume parsing captured.",
+      "corrected_match_score": null,
+      "corrected_meets_bar": null,
+      "submitted_at": "2026-07-09T11:30:00Z"
+    },
+    {
+      "id": "fb_002",
+      "job_id": "job_002",
+      "candidate_id": "cand_005",
+      "candidate_name": "Sarah Kim",
+      "scorecard": {
+        "technical": 3,
+        "communication": 3
+      },
+      "comment": "abc",
+      "corrected_match_score": null,
+      "corrected_meets_bar": null,
+      "submitted_at": "2026-07-11T16:22:40.140810+00:00"
+    }
+  ]
+}

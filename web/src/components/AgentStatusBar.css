@@ -1,0 +1,513 @@
+.status-bar {
+  position: relative;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 14px 40px 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  box-shadow: var(--shadow-sm);
+}
+
+.workflow-bar {
+  /* Spec alias — shares status-bar layout */
+}
+
+.workflow-step {
+  opacity: 0.55;
+  transition: all 0.25s ease;
+}
+
+.workflow-step.active {
+  opacity: 1;
+}
+
+.workflow-step.completed {
+  opacity: 1;
+}
+
+.workflow-step.locked {
+  opacity: 0.45;
+}
+
+.status-bar-track {
+  position: relative;
+  margin: 0 40px 0;
+  height: 3px;
+  background: #e5e7eb;
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+}
+
+.status-bar-track-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #7c3aed 55%, #059669 100%);
+  border-radius: 3px 3px 0 0;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.status-bar--animating .status-bar-track-fill {
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
+}
+
+.status-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: max-content;
+  padding-bottom: 14px;
+}
+
+.workflow-bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.workflow-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: help;
+}
+
+.workflow-legend-item--human {
+  color: #1d4ed8;
+}
+
+.workflow-legend-item--ai {
+  color: #6d28d9;
+}
+
+.workflow-step-type {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.workflow-step-type span {
+  cursor: help;
+}
+
+.workflow-step-type-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.workflow-step-type-label--human {
+  color: #1d4ed8;
+}
+
+.workflow-step-type-label--ai {
+  color: #6d28d9;
+}
+
+.status-step.locked .workflow-step-type-label {
+  color: var(--color-text-muted);
+}
+
+.status-step-wrap {
+  display: flex;
+  align-items: center;
+  animation: stepSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.status-step-wrap--pulse .status-step.active {
+  animation: stepActivate 0.45s ease;
+}
+
+.status-connector {
+  position: relative;
+  width: 24px;
+  height: 2px;
+  background: #e5e7eb;
+  margin: 0 2px;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.status-connector::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: #86efac;
+  border-radius: 1px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.status-connector--done::after {
+  width: 100%;
+}
+
+.status-connector--animating::after {
+  animation: connectorFill 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.status-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: default;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.status-step:disabled {
+  opacity: 1;
+}
+
+.status-step.completed:not(:disabled) {
+  cursor: pointer;
+}
+
+.status-step.completed:not(:disabled):hover,
+.status-step.completed:not(:disabled):focus-visible {
+  transform: translateY(-1px);
+}
+
+.status-step--human.completed:not(:disabled):hover,
+.status-step--human.completed:not(:disabled):focus-visible {
+  background: #eff6ff;
+}
+
+.status-step--ai.completed:not(:disabled):hover,
+.status-step--ai.completed:not(:disabled):focus-visible {
+  background: #f5f3ff;
+}
+
+.status-step.locked {
+  opacity: 0.55;
+}
+
+.status-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%) translateY(6px);
+  width: max-content;
+  max-width: 220px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 20;
+}
+
+.status-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #111827;
+}
+
+.status-step:hover .status-tooltip,
+.status-step:focus-visible .status-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.status-step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.status-label {
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.status-owner {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* legacy alias — step type now uses .workflow-step-type */
+.status-owner-icon {
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.status-owner--human {
+  color: #1d4ed8;
+}
+
+.status-owner--ai {
+  color: #6d28d9;
+}
+
+.status-step--human.active {
+  background: #eff6ff;
+  color: #1d4ed8;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+  border-left: 3px solid #2563eb;
+  animation: activeStepPulseHuman 2.4s ease-in-out infinite;
+}
+
+.status-step--ai.active {
+  background: #f5f3ff;
+  color: #6d28d9;
+  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.18);
+  animation: activeStepPulseAi 2.4s ease-in-out infinite;
+}
+
+.status-step.completed {
+  color: var(--color-success);
+  opacity: 1;
+}
+
+.status-step.locked .workflow-step-type-label,
+.status-step.locked .status-owner {
+  color: var(--color-text-muted);
+}
+
+.status-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: #f3f4f6;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.status-check {
+  display: inline-block;
+  font-size: 0.72rem;
+  line-height: 1;
+  animation: checkPop 0.35s ease;
+}
+
+.status-step--human.active .status-dot {
+  background: #2563eb;
+  color: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  transform: scale(1.08);
+  animation: humanDotPulse 2.4s ease-in-out infinite;
+}
+
+.status-step--ai.active .status-dot {
+  background: #7c3aed;
+  color: white;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  transform: scale(1.08);
+  animation: aiDotPulse 2.4s ease-in-out infinite;
+}
+
+.status-step.completed .status-dot {
+  background: #d1fae5;
+  color: var(--color-success);
+}
+
+.status-step.locked .status-dot {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.status-lock {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d1d5db;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.status-step.locked .status-lock {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.status-bar--animating .status-step.active .status-label {
+  animation: labelSlide 0.35s ease;
+}
+
+@keyframes stepSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes activeStepPulseHuman {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+}
+
+@keyframes activeStepPulseAi {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+  }
+}
+
+@keyframes humanDotPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    transform: scale(1.08);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(37, 99, 235, 0.22);
+    transform: scale(1.12);
+  }
+}
+
+@keyframes aiDotPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    transform: scale(1.08);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(124, 58, 237, 0.22);
+    transform: scale(1.12);
+  }
+}
+
+@keyframes stepActivate {
+  0% {
+    transform: scale(0.98);
+  }
+  45% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes connectorFill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes checkPop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes labelSlide {
+  from {
+    opacity: 0.6;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-bar-track-fill,
+  .status-connector::after,
+  .status-step,
+  .status-dot,
+  .status-tooltip,
+  .status-step-wrap {
+    transition: none;
+    animation: none !important;
+  }
+
+  .status-step-wrap--pulse .status-step.active,
+  .status-check,
+  .status-bar--animating .status-step.active .status-label,
+  .status-connector--animating::after {
+    animation: none;
+  }
+
+  .workflow-step-panel {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .status-bar {
+    padding: 12px 16px 0;
+  }
+
+  .status-bar-track {
+    margin: 0;
+  }
+
+  .status-tooltip {
+    display: none;
+  }
+}

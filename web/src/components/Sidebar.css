@@ -1,0 +1,346 @@
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-brand {
+  flex-shrink: 0;
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+}
+
+.sidebar-brand h1 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.sidebar-brand p {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-nav-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-nav-link:hover {
+  background: #f9fafb;
+  color: var(--color-text);
+}
+
+.sidebar-nav-link--active {
+  background: #eff6ff;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.sidebar-jobs {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 12px;
+}
+
+.sidebar-heading {
+  margin: 0 0 10px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+}
+
+.sidebar-heading--secondary {
+  margin-top: 20px;
+}
+
+.sidebar-status {
+  margin: 0 8px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.sidebar-error {
+  margin: 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.job-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.job-list > li {
+  animation: jobCardFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.job-list > li:nth-child(1) { animation-delay: 0ms; }
+.job-list > li:nth-child(2) { animation-delay: 40ms; }
+.job-list > li:nth-child(3) { animation-delay: 80ms; }
+.job-list > li:nth-child(4) { animation-delay: 120ms; }
+.job-list > li:nth-child(5) { animation-delay: 160ms; }
+.job-list > li:nth-child(6) { animation-delay: 200ms; }
+.job-list > li:nth-child(n + 7) { animation-delay: 240ms; }
+
+@keyframes jobCardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.job-card,
+.role-card {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 12px 12px 12px 10px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.job-card:hover,
+.role-card:hover {
+  background: #f3f4f6;
+  border-color: #dbeafe;
+  border-left-color: #60a5fa;
+  transform: translateX(3px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+}
+
+.job-card--selected,
+.role-card.selected {
+  background: #eef2ff;
+  border-color: #bfdbfe;
+  border-left: 3px solid #4f46e5;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.12), var(--shadow-sm);
+}
+
+.job-card--selected:hover,
+.role-card.selected:hover {
+  background: #dbeafe;
+  border-left-color: #4f46e5;
+  transform: translateX(3px);
+}
+
+.job-card--paused {
+  opacity: 0.72;
+}
+
+.job-card--paused:hover {
+  border-left-color: #9ca3af;
+}
+
+.job-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.job-card-title {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-text);
+  flex: 1;
+}
+
+.job-card--selected .job-card-title {
+  color: #1e40af;
+}
+
+.job-card-progress {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.job-card-progress--not-started {
+  color: #4b5563;
+  background: #f3f4f6;
+}
+
+.job-card-progress--in-progress {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.job-card-progress--checkpoint-pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.job-card-detail {
+  display: block;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.job-card-level {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #1e40af;
+  background: #dbeafe;
+}
+
+.job-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.job-card-count {
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.job-card-count--ready {
+  color: #1e40af;
+}
+
+.job-card-count--empty {
+  color: var(--color-text-muted);
+}
+
+.job-card--selected .job-card-level {
+  background: #bfdbfe;
+}
+
+.job-card-selected-mark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.sidebar-footer {
+  flex-shrink: 0;
+  padding: 16px 16px 18px;
+  border-top: 1px solid var(--color-border);
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-footer-label {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.sidebar-footer-title {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.35;
+}
+
+.sidebar-footer-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.sidebar-footer-step {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.sidebar-footer-step span {
+  color: var(--color-primary);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.sidebar-start-btn {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.sidebar-start-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-list > li {
+    animation: none;
+  }
+}

@@ -1,0 +1,236 @@
+[
+  {
+    "id": "cand_001",
+    "job_id": "job_001",
+    "name": "Jane Doe",
+    "email": "jane.doe@email.com",
+    "resume_link": "resumes/jane_doe.pdf",
+    "stage": "applied",
+    "tags": ["python", "senior", "backend"]
+  },
+  {
+    "id": "cand_002",
+    "job_id": "job_001",
+    "name": "Marcus Lee",
+    "email": "marcus.lee@email.com",
+    "resume_link": "resumes/marcus_lee.pdf",
+    "stage": "phone_screen",
+    "tags": ["python", "mid-level", "api"]
+  },
+  {
+    "id": "cand_003",
+    "job_id": "job_001",
+    "name": "Priya Sharma",
+    "email": "priya.sharma@email.com",
+    "resume_link": "resumes/priya_sharma.pdf",
+    "stage": "applied",
+    "tags": ["senior", "python", "lead"]
+  },
+  {
+    "id": "cand_004",
+    "job_id": "job_001",
+    "name": "Alex Rivera",
+    "email": "alex.rivera@email.com",
+    "resume_link": "resumes/alex_rivera.pdf",
+    "stage": "applied",
+    "tags": ["python", "backend"]
+  },
+  {
+    "id": "cand_005",
+    "job_id": "job_002",
+    "name": "Sarah Kim",
+    "email": "sarah.kim@email.com",
+    "resume_link": "resumes/sarah_kim.pdf",
+    "stage": "applied",
+    "tags": ["product", "saas", "b2b"]
+  },
+  {
+    "id": "cand_006",
+    "job_id": "job_002",
+    "name": "David Okonkwo",
+    "email": "david.okonkwo@email.com",
+    "resume_link": "resumes/david_okonkwo.pdf",
+    "stage": "phone_screen",
+    "tags": ["product", "roadmap", "stakeholders"]
+  },
+  {
+    "id": "cand_007",
+    "job_id": "job_004",
+    "name": "Emily Chen",
+    "email": "emily.chen@email.com",
+    "resume_link": "resumes/emily_chen.pdf",
+    "stage": "applied",
+    "tags": ["sql", "analytics", "reporting"]
+  },
+  {
+    "id": "cand_008",
+    "job_id": "job_005",
+    "name": "Jordan Blake",
+    "email": "jordan.blake@email.com",
+    "resume_link": "resumes/jordan_blake.pdf",
+    "stage": "applied",
+    "tags": ["devops", "aws", "kubernetes"]
+  },
+  {
+    "id": "cand_009",
+    "job_id": "job_003",
+    "name": "Nina Patel",
+    "email": "nina.patel@email.com",
+    "resume_link": "resumes/nina_patel.pdf",
+    "stage": "applied",
+    "tags": ["react", "typescript", "frontend"]
+  },
+  {
+    "id": "cand_010",
+    "job_id": "job_003",
+    "name": "Chris Morgan",
+    "email": "chris.morgan@email.com",
+    "resume_link": "resumes/chris_morgan.pdf",
+    "stage": "phone_screen",
+    "tags": ["react", "vite", "accessibility"]
+  },
+  {
+    "id": "cand_011",
+    "job_id": "job_006",
+    "name": "Olivia Grant",
+    "email": "olivia.grant@email.com",
+    "resume_link": "resumes/olivia_grant.pdf",
+    "stage": "applied",
+    "tags": ["ux", "wireframes", "figma"]
+  },
+  {
+    "id": "cand_012",
+    "job_id": "job_006",
+    "name": "Ethan Brooks",
+    "email": "ethan.brooks@email.com",
+    "resume_link": "resumes/ethan_brooks.pdf",
+    "stage": "applied",
+    "tags": ["ux", "prototyping", "research"]
+  },
+  {
+    "id": "cand_013",
+    "job_id": "job_007",
+    "name": "Rachel Wu",
+    "email": "rachel.wu@email.com",
+    "resume_link": "resumes/rachel_wu.pdf",
+    "stage": "applied",
+    "tags": ["ml", "python", "pytorch"]
+  },
+  {
+    "id": "cand_014",
+    "job_id": "job_007",
+    "name": "Tomás Herrera",
+    "email": "tomas.herrera@email.com",
+    "resume_link": "resumes/tomas_herrera.pdf",
+    "stage": "phone_screen",
+    "tags": ["mlops", "scikit-learn", "nlp"]
+  },
+  {
+    "id": "cand_015",
+    "job_id": "job_008",
+    "name": "Aisha Johnson",
+    "email": "aisha.johnson@email.com",
+    "resume_link": "resumes/aisha_johnson.pdf",
+    "stage": "applied",
+    "tags": ["recruiting", "sourcing", "engineering"]
+  },
+  {
+    "id": "cand_016",
+    "job_id": "job_009",
+    "name": "Michael Torres",
+    "email": "michael.torres@email.com",
+    "resume_link": "resumes/michael_torres.pdf",
+    "stage": "applied",
+    "tags": ["customer-success", "saas", "enterprise"]
+  },
+  {
+    "id": "cand_017",
+    "job_id": "job_009",
+    "name": "Lena Fischer",
+    "email": "lena.fischer@email.com",
+    "resume_link": "resumes/lena_fischer.pdf",
+    "stage": "applied",
+    "tags": ["onboarding", "renewals", "b2b"]
+  },
+  {
+    "id": "cand_018",
+    "job_id": "job_010",
+    "name": "Sam Okafor",
+    "email": "sam.okafor@email.com",
+    "resume_link": "resumes/sam_okafor.pdf",
+    "stage": "applied",
+    "tags": ["security", "cloud", "compliance"]
+  },
+  {
+    "id": "cand_019",
+    "job_id": "job_011",
+    "name": "Hannah Reed",
+    "email": "hannah.reed@email.com",
+    "resume_link": "resumes/hannah_reed.pdf",
+    "stage": "applied",
+    "tags": ["ai-product", "genai", "roadmap"]
+  },
+  {
+    "id": "cand_020",
+    "job_id": "job_011",
+    "name": "Vikram Nair",
+    "email": "vikram.nair@email.com",
+    "resume_link": "resumes/vikram_nair.pdf",
+    "stage": "phone_screen",
+    "tags": ["ml-product", "saas", "responsible-ai"]
+  },
+  {
+    "id": "cand_021",
+    "job_id": "job_012",
+    "name": "Sofia Alvarez",
+    "email": "sofia.alvarez@email.com",
+    "resume_link": "resumes/sofia_alvarez.pdf",
+    "stage": "applied",
+    "tags": ["llm", "rag", "python"]
+  },
+  {
+    "id": "cand_022",
+    "job_id": "job_012",
+    "name": "James Liu",
+    "email": "james.liu@email.com",
+    "resume_link": "resumes/james_liu.pdf",
+    "stage": "applied",
+    "tags": ["genai", "openai", "guardrails"]
+  },
+  {
+    "id": "cand_023",
+    "job_id": "job_013",
+    "name": "Dr. Mei Lin",
+    "email": "mei.lin@email.com",
+    "resume_link": "resumes/mei_lin.pdf",
+    "stage": "applied",
+    "tags": ["nlp", "research", "fairness"]
+  },
+  {
+    "id": "cand_024",
+    "job_id": "job_013",
+    "name": "Andre Santos",
+    "email": "andre.santos@email.com",
+    "resume_link": "resumes/andre_santos.pdf",
+    "stage": "phone_screen",
+    "tags": ["deep-learning", "ranking", "phd"]
+  },
+  {
+    "id": "cand_025",
+    "job_id": "job_014",
+    "name": "Grace O'Malley",
+    "email": "grace.omalley@email.com",
+    "resume_link": "resumes/grace_omalley.pdf",
+    "stage": "applied",
+    "tags": ["solutions", "ai", "enterprise"]
+  },
+  {
+    "id": "cand_026",
+    "job_id": "job_014",
+    "name": "Kevin Park",
+    "email": "kevin.park@email.com",
+    "resume_link": "resumes/kevin_park.pdf",
+    "stage": "applied",
+    "tags": ["customer-facing", "prompts", "integrations"]
+  }
+]

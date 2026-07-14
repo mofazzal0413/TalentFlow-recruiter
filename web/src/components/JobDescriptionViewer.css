@@ -1,0 +1,84 @@
+.job-description-viewer {
+  margin-top: 4px;
+}
+
+.job-description-viewer__heading {
+  margin-bottom: 12px;
+}
+
+.job-description-viewer__body {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 18px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #f9fafb;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.job-description-viewer__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.job-description-viewer__body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.job-description-viewer__body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.job-description-viewer__body:focus {
+  outline: none;
+  border-color: #bfdbfe;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+.job-description-viewer__block {
+  margin: 0 0 14px;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.job-description-viewer__block:last-child {
+  margin-bottom: 0;
+}
+
+.job-description-viewer__body p {
+  margin: 0 0 14px;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.job-description-viewer__body p:last-child {
+  margin-bottom: 0;
+}
+
+.job-description-viewer__body ul {
+  margin: 0 0 14px;
+  padding-left: 1.25rem;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.job-description-viewer__body ul:last-child {
+  margin-bottom: 0;
+}
+
+.job-description-viewer__body li {
+  margin-bottom: 6px;
+}
+
+.job-description-viewer__body li:last-child {
+  margin-bottom: 0;
+}
+
+.job-description-viewer__body li::marker {
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,102 @@
+/* Shared micro-animations — Steps 6 spec */
+
+@keyframes pulse {
+  from {
+    transform: scale(0.97);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes screenEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Active workflow step pulse */
+.workflow-step.active {
+  animation: pulse 0.25s ease;
+}
+
+/* Screen transitions */
+.screen {
+  animation: fadeIn 0.3s ease;
+}
+
+.screen-transition {
+  animation: screenEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100%;
+}
+
+.workflow-screen {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Candidate cards */
+.candidate-card {
+  animation: slideIn 0.25s ease backwards;
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.45s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workflow-step.active,
+  .screen,
+  .screen-transition,
+  .workflow-screen,
+  .candidate-card,
+  .animate-fade-in {
+    animation: none !important;
+  }
+}

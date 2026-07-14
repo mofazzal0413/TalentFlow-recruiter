@@ -1,0 +1,20 @@
+.workflow-stopped-banner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.workflow-stopped-banner h1 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #991b1b;
+}
+
+.workflow-stopped-banner p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}

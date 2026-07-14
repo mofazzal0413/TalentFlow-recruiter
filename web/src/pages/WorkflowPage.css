@@ -1,0 +1,30 @@
+.workflow-step-panel {
+  animation: workflowPanelEnter 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.workflow-step-panel .page-header {
+  animation: workflowPanelEnter 0.38s cubic-bezier(0.4, 0, 0.2, 1) 0.05s backwards;
+}
+
+.workflow-step-panel .section-card {
+  animation: workflowPanelEnter 0.42s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
+}
+
+@keyframes workflowPanelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workflow-step-panel,
+  .workflow-step-panel .page-header,
+  .workflow-step-panel .section-card {
+    animation: none;
+  }
+}

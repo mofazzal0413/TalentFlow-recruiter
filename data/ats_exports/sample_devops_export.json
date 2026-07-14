@@ -1,0 +1,17 @@
+{
+  "job_id": "job_005",
+  "title": "DevOps Engineer",
+  "level": "Senior",
+  "description": "Own CI/CD pipelines, infrastructure as code, and observability for production services.\n\nKey responsibilities:\n- Maintain Terraform modules and AWS infrastructure\n- Improve Kubernetes deployments and monitoring\n- Reduce deployment toil with safer automation\n\nExperience with AWS, Kubernetes, and Terraform is required.",
+  "must_have": [
+    "AWS",
+    "Kubernetes",
+    "Terraform",
+    "5+ years experience"
+  ],
+  "nice_to_have": [
+    "CI/CD pipelines",
+    "Observability",
+    "Infrastructure as code"
+  ]
+}

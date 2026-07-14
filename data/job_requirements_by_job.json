@@ -1,0 +1,87 @@
+{
+  "job_001": {
+    "source": "recruiter_override",
+    "must_have": [
+      "Python",
+      "5+ years experience",
+      "PostgreSQL",
+      "REST APIs"
+    ],
+    "nice_to_have": [
+      "AWS",
+      "Django",
+      "distributed systems",
+      "Mentoring experience"
+    ]
+  },
+  "job_004": {
+    "source": "ats_export",
+    "must_have": [
+      "SQL",
+      "1+ years experience",
+      "Clear written communication"
+    ],
+    "nice_to_have": [
+      "Spreadsheet modeling",
+      "ATS reporting",
+      "Dashboard design"
+    ]
+  },
+  "job_007": {
+    "source": "ats_export",
+    "must_have": [
+      "Python",
+      "Machine Learning",
+      "5+ years experience"
+    ],
+    "nice_to_have": [
+      "PyTorch",
+      "MLOps",
+      "Feature pipelines",
+      "Inference APIs"
+    ]
+  },
+  "job_011": {
+    "source": "recruiter_override",
+    "must_have": [
+      "5+ years experience",
+      "B2B SaaS product experience",
+      "AI product roadmap ownership"
+    ],
+    "nice_to_have": [
+      "GenAI",
+      "Responsible AI guardrails",
+      "Success metrics definition"
+    ]
+  },
+  "job_012": {
+    "source": "ats_export",
+    "must_have": [
+      "Python",
+      "GenAI",
+      "5+ years experience",
+      "LLM application development"
+    ],
+    "nice_to_have": [
+      "LangChain",
+      "RAG",
+      "Vector databases",
+      "Prompt engineering"
+    ]
+  },
+  "job_005": {
+    "source": "ats_export",
+    "must_have": [
+      "AWS",
+      "Kubernetes",
+      "Terraform",
+      "5+ years experience"
+    ],
+    "nice_to_have": [
+      "CI/CD pipelines",
+      "Observability",
+      "Infrastructure as code"
+    ],
+    "imported_at": "2026-07-11T18:31:15.378329+00:00"
+  }
+}

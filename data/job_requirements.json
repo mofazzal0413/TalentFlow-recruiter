@@ -1,0 +1,14 @@
+{
+  "role": "Senior Backend Engineer",
+  "must_have": [
+    "Python",
+    "5+ years experience",
+    "PostgreSQL",
+    "REST APIs"
+  ],
+  "nice_to_have": [
+    "AWS",
+    "Django",
+    "distributed systems"
+  ]
+}
