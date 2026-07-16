@@ -3,6 +3,7 @@ import { CandidateTable } from "../components/CandidateTable";
 import { CheckpointScreen } from "../components/CheckpointScreen";
 import { ClientPackButton } from "../components/ClientPackButton";
 import { ErrorBanner } from "../components/ErrorBanner";
+import { ExtractionPreview } from "../components/ExtractionPreview";
 import { FeedbackPanel } from "../components/FeedbackPanel";
 import { JobDetailsPanel } from "../components/JobDetailsPanel";
 import { JobRequirementsPanel } from "../components/JobRequirementsPanel";
@@ -41,6 +42,7 @@ export function WorkflowPage() {
     feedback,
     workflowStopped,
     checkpointApproved,
+    extractionValidated,
     loading,
     error,
     lastAgentOutput,
@@ -48,6 +50,7 @@ export function WorkflowPage() {
     extractResume,
     extractAllResumes,
     continueToEvaluation,
+    confirmExtraction,
     runEvaluation,
     submitFeedback,
     approveCheckpoint,
@@ -175,6 +178,7 @@ export function WorkflowPage() {
               checkpointApproved={checkpointApproved}
               workflowStopped={workflowStopped}
               schedulingDraftsCount={schedulingDrafts.length}
+              extractionValidated={extractionValidated}
               onNavigate={goTo}
             />
           )}
@@ -304,11 +308,21 @@ export function WorkflowPage() {
                     onClick={continueToEvaluation}
                     disabled={loading || anyExtracting || !allResumesExtracted}
                   >
-                    Continue to Fit Evaluation
+                    Continue to Extraction Preview
                   </button>
                 </div>
               </div>
             </section>
+          )}
+
+          {selectedJob && currentStep === "extraction-preview" && (
+            <ExtractionPreview
+              candidates={candidates}
+              resumes={resumes}
+              loading={loading}
+              onConfirm={confirmExtraction}
+              onBack={() => setStep("resumes")}
+            />
           )}
 
           {selectedJob && currentStep === "evaluation" && (

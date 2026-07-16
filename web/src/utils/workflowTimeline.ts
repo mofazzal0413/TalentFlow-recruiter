@@ -22,6 +22,7 @@ export interface WorkflowTimelineInput {
   checkpointApproved: boolean | null;
   workflowStopped: boolean;
   schedulingDraftsCount: number;
+  extractionValidated: boolean;
 }
 
 export function buildWorkflowTimeline(input: WorkflowTimelineInput): TimelineStep[] {
@@ -29,6 +30,7 @@ export function buildWorkflowTimeline(input: WorkflowTimelineInput): TimelineSte
 
   const candidatesComplete = input.candidatesFetched;
   const resumesComplete = input.allResumesExtracted;
+  const extractionPreviewComplete = input.extractionValidated;
   const evaluationComplete = input.shortlistCount > 0;
   const checkpointComplete = input.checkpointApproved === true;
   const schedulingComplete = input.schedulingDraftsCount > 0;
@@ -67,6 +69,14 @@ export function buildWorkflowTimeline(input: WorkflowTimelineInput): TimelineSte
       : input.anyExtracting
         ? `Extracting ${input.extractedCount} of ${input.candidatesCount}…`
         : `${input.extractedCount} of ${input.candidatesCount} extracted`;
+
+  const extractionPreviewDetail = extractionPreviewComplete
+    ? "Reviewed — sections confirmed"
+    : !resumesComplete
+      ? "Waiting for resume extraction"
+      : input.currentStep === "extraction-preview"
+        ? "Review section confidence before scoring"
+        : "Not started";
 
   const evaluationDetail = evaluationComplete
     ? `${input.shortlistCount} candidate${input.shortlistCount === 1 ? "" : "s"} ranked`
@@ -119,20 +129,27 @@ export function buildWorkflowTimeline(input: WorkflowTimelineInput): TimelineSte
     },
     {
       step: 4,
-      id: "evaluation",
-      label: "Fit evaluated",
-      status: statusFor("evaluation", evaluationComplete, resumesComplete),
-      detail: evaluationDetail,
+      id: "extraction-preview",
+      label: "Extraction preview",
+      status: statusFor("extraction-preview", extractionPreviewComplete, resumesComplete),
+      detail: extractionPreviewDetail,
     },
     {
       step: 5,
+      id: "evaluation",
+      label: "Fit evaluated",
+      status: statusFor("evaluation", evaluationComplete, extractionPreviewComplete),
+      detail: evaluationDetail,
+    },
+    {
+      step: 6,
       id: "checkpoint",
       label: "Human checkpoint",
       status: statusFor("checkpoint", checkpointComplete, evaluationComplete),
       detail: checkpointDetail,
     },
     {
-      step: 6,
+      step: 7,
       id: "scheduling",
       label: "Scheduling draft",
       status: statusFor(

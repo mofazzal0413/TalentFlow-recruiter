@@ -265,6 +265,25 @@ export function validateResume(data: unknown): ValidationResult<ResumeData> {
     errors.push("suspicious_content must be a boolean when provided.");
   }
 
+  if (data.skill_details !== undefined) {
+    if (!Array.isArray(data.skill_details)) {
+      errors.push("skill_details must be an array when provided.");
+    } else {
+      data.skill_details.forEach((item, index) => {
+        if (!isRecord(item)) {
+          errors.push(`skill_details[${index}] must be an object.`);
+          return;
+        }
+        if (!isString(item.name) || !isString(item.canonical)) {
+          errors.push(`skill_details[${index}] must include name and canonical strings.`);
+        }
+        if (!isNumber(item.confidence) || item.confidence < 0 || item.confidence > 1) {
+          errors.push(`skill_details[${index}].confidence must be between 0 and 1.`);
+        }
+      });
+    }
+  }
+
   if (isString(data.raw_text) && hasInjection(data.raw_text)) {
     // Flagged via suspicious_content in backend; raw text may contain adversarial content for review.
   }
@@ -284,6 +303,7 @@ export function validateResume(data: unknown): ValidationResult<ResumeData> {
       missing_fields: data.missing_fields as string[] | undefined,
       error: data.error as string | undefined,
       suspicious_content: data.suspicious_content as boolean | undefined,
+      skill_details: data.skill_details as ResumeData["skill_details"],
     },
     errors: [],
   };

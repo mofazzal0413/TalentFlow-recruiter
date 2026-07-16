@@ -9,14 +9,14 @@ if [ ! -d ".venv" ]; then
 fi
 
 source .venv/bin/activate
-pip install -q -r requirements.txt
+"$ROOT/.venv/bin/python" -m pip install -q -r requirements.txt
 
 if [ ! -d "web/node_modules" ]; then
   (cd web && npm install)
 fi
 
 echo "Starting TalentFlow API on http://127.0.0.1:8000"
-uvicorn api.main:app --reload --port 8000 &
+"$ROOT/.venv/bin/python" -m uvicorn api.main:app --reload --port 8000 &
 API_PID=$!
 
 for i in $(seq 1 20); do

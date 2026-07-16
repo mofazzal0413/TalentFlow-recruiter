@@ -170,6 +170,133 @@
   margin-top: 8px;
 }
 
+.resume-skills-section {
+  margin-top: 16px;
+}
+
+.resume-skills-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.resume-skills-header h3 {
+  margin: 0;
+}
+
+.resume-skills-summary {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.resume-skill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.resume-skill-item {
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.resume-skill-item--genai {
+  border-color: #c7d2fe;
+  background: #f5f7ff;
+}
+
+.resume-skill-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.resume-skill-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.resume-skill-confidence {
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.resume-skill-confidence--high {
+  color: var(--color-success);
+}
+
+.resume-skill-confidence--medium {
+  color: var(--color-primary);
+}
+
+.resume-skill-confidence--low {
+  color: var(--color-warning);
+}
+
+.resume-skill-bar {
+  height: 4px;
+  margin-top: 8px;
+  border-radius: 999px;
+  max-width: 100%;
+}
+
+.resume-skill-bar--high {
+  background: var(--color-success);
+}
+
+.resume-skill-bar--medium {
+  background: var(--color-primary);
+}
+
+.resume-skill-bar--low {
+  background: var(--color-warning);
+}
+
+.resume-skill-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.resume-skill-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef2f7;
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.resume-skill-tag--genai {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.resume-skill-evidence {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .resume-progress {
   margin: 0 0 16px;
   font-size: 0.88rem;

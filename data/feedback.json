@@ -27,6 +27,20 @@
       "corrected_match_score": null,
       "corrected_meets_bar": null,
       "submitted_at": "2026-07-11T16:22:40.140810+00:00"
+    },
+    {
+      "id": "fb_003",
+      "job_id": "job_012",
+      "candidate_id": "cand_021",
+      "candidate_name": "Sofia Alvarez",
+      "scorecard": {
+        "technical": 3,
+        "communication": 3
+      },
+      "comment": "no correction",
+      "corrected_match_score": null,
+      "corrected_meets_bar": null,
+      "submitted_at": "2026-07-14T23:27:25.874893+00:00"
     }
   ]
 }

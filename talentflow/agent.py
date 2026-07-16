@@ -11,6 +11,7 @@ from talentflow.tools import (
     get_job_requirements,
     get_resume_text,
 )
+from talentflow.tools.extraction_preview import build_extraction_preview, format_extraction_preview
 
 CLARIFICATION_MAP = {
     "sparse": "Confirm skills, experience, and education with the candidate or hiring manager",
@@ -75,6 +76,17 @@ def run() -> str:
     resumes: dict[str, dict[str, Any]] = {}
     for candidate in candidates:
         resumes[candidate["id"]] = get_resume_text(candidate["id"])
+
+    # extraction_preview: surface a per-section confidence check before scoring.
+    # CLI is the documented fast-path/no-checkpoint runner, so this is informational
+    # (printed, not blocking) — the web UI enforces the hard gate via a human
+    # checkpoint screen (see web/src/components/ExtractionPreview.tsx).
+    print("Extraction Preview (before scoring):")
+    for candidate in candidates:
+        preview = build_extraction_preview(resumes[candidate["id"]])
+        for line in format_extraction_preview(candidate["name"], preview):
+            print(line)
+    print()
 
     job_requirements = get_job_requirements("job_001")
     ranked = evaluate_fit(candidates, resumes, job_requirements)

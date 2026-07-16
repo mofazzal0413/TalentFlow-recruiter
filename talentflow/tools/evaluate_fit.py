@@ -38,6 +38,18 @@ def _skill_corpus(skills: list[str], experience: list[dict[str, Any]], raw_text:
     return _normalize(" ".join(parts))
 
 
+def _contains_keyword(text: str, keyword: str) -> bool:
+    """Whole-word/phrase match.
+
+    Plain substring checks let generic terms like "sql" match inside unrelated
+    words (e.g. "sql" is a substring of both "postgresql" and "mysql"), which
+    previously caused the matcher to credit a candidate with PostgreSQL when
+    their resume only listed MySQL. Word-boundary matching prevents that.
+    """
+    pattern = r"\b" + re.escape(keyword) + r"\b"
+    return bool(re.search(pattern, text))
+
+
 def _has_skill(skills: list[str], experience: list[dict[str, Any]], requirement: str, raw_text: str = "") -> bool:
     requirement_value = _normalize(requirement)
     corpus = _skill_corpus(skills, experience, raw_text)
@@ -47,12 +59,17 @@ def _has_skill(skills: list[str], experience: list[dict[str, Any]], requirement:
         return True
 
     for skill_key, keywords in _KEYWORD_MAP.items():
-        if skill_key in requirement_value or any(keyword in requirement_value for keyword in keywords):
-            if skill_key in normalized_skills or any(keyword in corpus for keyword in keywords):
+        key_matches_requirement = _contains_keyword(requirement_value, skill_key) or any(
+            _contains_keyword(requirement_value, keyword) for keyword in keywords
+        )
+        if key_matches_requirement:
+            if skill_key in normalized_skills or any(
+                _contains_keyword(corpus, keyword) for keyword in keywords
+            ):
                 return True
 
     keywords = _KEYWORD_MAP.get(requirement_value, [requirement_value])
-    return any(keyword in corpus for keyword in keywords)
+    return any(_contains_keyword(corpus, keyword) for keyword in keywords)
 
 
 def _parse_years_requirement(requirement: str) -> int | None:

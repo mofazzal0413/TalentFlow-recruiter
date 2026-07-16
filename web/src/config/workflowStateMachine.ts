@@ -5,6 +5,7 @@ export type WorkflowStepKey =
   | "jobSelection"
   | "fetchCandidates"
   | "resumeExtraction"
+  | "extractionPreview"
   | "fitEvaluation"
   | "checkpoint"
   | "schedulingDraft";
@@ -40,6 +41,14 @@ export const WORKFLOW_STEP_CONFIG: WorkflowStepConfig[] = [
     type: "ai",
     tooltip:
       "AI extracts skills, experience, and flags from each resume — including PDF, DOCX, and text files.",
+  },
+  {
+    key: "extractionPreview",
+    id: "extraction-preview",
+    label: "Extraction Preview",
+    type: "human",
+    tooltip:
+      "You review each resume broken into Header, Skills, Experience, Projects, and Education blocks with a confidence score before scoring runs.",
   },
   {
     key: "fitEvaluation",

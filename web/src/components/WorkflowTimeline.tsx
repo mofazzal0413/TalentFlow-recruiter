@@ -43,6 +43,7 @@ export function WorkflowTimeline({
   checkpointApproved,
   workflowStopped,
   schedulingDraftsCount,
+  extractionValidated,
   onNavigate,
 }: WorkflowTimelineProps) {
   const [open, setOpen] = useState(true);
@@ -60,6 +61,7 @@ export function WorkflowTimeline({
         checkpointApproved,
         workflowStopped,
         schedulingDraftsCount,
+        extractionValidated,
       }),
     [
       selectedJob,
@@ -73,6 +75,7 @@ export function WorkflowTimeline({
       checkpointApproved,
       workflowStopped,
       schedulingDraftsCount,
+      extractionValidated,
     ],
   );
 

@@ -2,6 +2,7 @@ export type WorkflowStep =
   | "job-selection"
   | "candidates"
   | "resumes"
+  | "extraction-preview"
   | "evaluation"
   | "checkpoint"
   | "scheduling";
@@ -38,6 +39,15 @@ export interface Candidate {
 
 export type ResumeExtractStatus = "idle" | "extracting" | "complete" | "error";
 
+export interface SkillDetail {
+  name: string;
+  canonical: string;
+  confidence: number;
+  source: "skills" | "experience" | "education" | "projects" | "summary" | "unknown";
+  pass: "first" | "second";
+  evidence: string;
+}
+
 export interface ResumeData {
   skills: string[];
   experience: Array<{
@@ -55,6 +65,7 @@ export interface ResumeData {
   missing_fields?: string[];
   error?: string;
   suspicious_content?: boolean;
+  skill_details?: SkillDetail[];
 }
 
 export interface ShortlistItem {

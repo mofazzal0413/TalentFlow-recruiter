@@ -54,6 +54,7 @@ interface WorkflowState {
   feedback: FeedbackEntry[];
   checkpointApproved: boolean | null;
   workflowStopped: boolean;
+  extractionValidated: boolean;
   loading: boolean;
   error: string | null;
   lastAgentOutput: AgentOutputSummary | null;
@@ -67,6 +68,7 @@ interface WorkflowState {
   extractResume: (candidateId: string) => Promise<void>;
   extractAllResumes: () => Promise<void>;
   continueToEvaluation: () => Promise<void>;
+  confirmExtraction: () => void;
   runEvaluation: () => Promise<void>;
   submitFeedback: (payload: FeedbackSubmission) => Promise<void>;
   approveCheckpoint: (approved: boolean) => Promise<void>;
@@ -104,6 +106,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
   const [feedback, setFeedback] = useState<FeedbackEntry[]>([]);
   const [checkpointApproved, setCheckpointApproved] = useState<boolean | null>(null);
   const [workflowStopped, setWorkflowStopped] = useState(false);
+  const [extractionValidated, setExtractionValidated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastAgentOutput, setLastAgentOutput] = useState<AgentOutputSummary | null>(null);
@@ -320,6 +323,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
       setFeedback([]);
       setCheckpointApproved(null);
       setWorkflowStopped(false);
+      setExtractionValidated(false);
       setJobRequirements(null);
       setRequirementsImportMessage(null);
       setError(null);
@@ -404,7 +408,8 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     try {
       const feedbackResult = await api.getFeedback(selectedJobId);
       setFeedback(feedbackResult.feedback);
-      setCurrentStep("evaluation");
+      setExtractionValidated(false);
+      setCurrentStep("extraction-preview");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to continue to evaluation.");
     } finally {
@@ -427,7 +432,8 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
       try {
         const feedbackResult = await api.getFeedback(selectedJobId);
         setFeedback(feedbackResult.feedback);
-        setCurrentStep("evaluation");
+        setExtractionValidated(false);
+        setCurrentStep("extraction-preview");
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load feedback.");
         allSucceeded = false;
@@ -437,8 +443,18 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, [candidates, extractResumeForCandidate, selectedJobId]);
 
+  const confirmExtraction = useCallback(() => {
+    setExtractionValidated(true);
+    setCurrentStep("evaluation");
+  }, []);
+
   const runEvaluation = useCallback(async () => {
     if (!selectedJobId) return;
+    if (!extractionValidated) {
+      setError("Confirm the Extraction Preview before running fit scoring.");
+      setCurrentStep("extraction-preview");
+      return;
+    }
     setLoading(true);
     setError(null);
     setWorkflowStopped(false);
@@ -461,7 +477,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [recordAgentOutput, selectedJobId, candidates, resumes]);
+  }, [recordAgentOutput, selectedJobId, candidates, resumes, extractionValidated]);
 
   const submitFeedback = useCallback(
     async (payload: FeedbackSubmission) => {
@@ -510,6 +526,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     setStrongCandidates([]);
     setSchedulingDrafts([]);
     setFeedback([]);
+    setExtractionValidated(false);
     setError(null);
   }, []);
 
@@ -564,6 +581,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     setFeedback([]);
     setCheckpointApproved(null);
     setWorkflowStopped(false);
+    setExtractionValidated(false);
     setError(null);
     setLastAgentOutput(null);
   }, []);
@@ -594,6 +612,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
       feedback,
       checkpointApproved,
       workflowStopped,
+      extractionValidated,
       loading,
       error,
       lastAgentOutput,
@@ -607,6 +626,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
       extractResume,
       extractAllResumes,
       continueToEvaluation,
+      confirmExtraction,
       runEvaluation,
       submitFeedback,
       approveCheckpoint,
@@ -641,6 +661,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
       feedback,
       checkpointApproved,
       workflowStopped,
+      extractionValidated,
       loading,
       error,
       lastAgentOutput,
@@ -653,6 +674,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
       extractResume,
       extractAllResumes,
       continueToEvaluation,
+      confirmExtraction,
       runEvaluation,
       submitFeedback,
       approveCheckpoint,

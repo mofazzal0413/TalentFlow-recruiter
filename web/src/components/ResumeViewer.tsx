@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import type { ResumeData, ResumeExtractStatus } from "../types";
+import { useEffect, useMemo, useState } from "react";
+import type { ResumeData, ResumeExtractStatus, SkillDetail } from "../types";
 import { validateResume } from "../utils/validators";
 import { ErrorBanner } from "./ErrorBanner";
 import "./ResumeViewer.css";
@@ -20,6 +20,39 @@ const STATUS_LABELS: Record<ResumeExtractStatus, string> = {
   complete: "Extracted",
   error: "Failed",
 };
+
+const GENAI_SKILLS = new Set([
+  "Hugging Face Transformers",
+  "LangChain",
+  "LoRA",
+  "RAG",
+  "Vector Databases",
+]);
+
+function formatConfidence(confidence: number): string {
+  return `${Math.round(confidence * 100)}%`;
+}
+
+function confidenceTier(confidence: number): "high" | "medium" | "low" {
+  if (confidence >= 0.85) return "high";
+  if (confidence >= 0.7) return "medium";
+  return "low";
+}
+
+function buildSkillDetails(resume: ResumeData): SkillDetail[] {
+  if (resume.skill_details?.length) {
+    return [...resume.skill_details].sort((a, b) => b.confidence - a.confidence);
+  }
+
+  return (resume.skills ?? []).map((name) => ({
+    name,
+    canonical: name,
+    confidence: 0.85,
+    source: "skills" as const,
+    pass: "first" as const,
+    evidence: name,
+  }));
+}
 
 export function ResumeViewer({
   candidateName,
@@ -51,6 +84,12 @@ export function ResumeViewer({
 
   const resumeValidation = resume ? validateResume(resume) : { ok: true, errors: [] as string[] };
   const safeResume = resumeValidation.ok ? resume : undefined;
+  const skillDetails = useMemo(
+    () => (safeResume ? buildSkillDetails(safeResume) : []),
+    [safeResume],
+  );
+  const genAiSkills = skillDetails.filter((skill) => GENAI_SKILLS.has(skill.canonical));
+  const secondPassSkills = skillDetails.filter((skill) => skill.pass === "second");
 
   return (
     <div
@@ -113,9 +152,62 @@ export function ResumeViewer({
               {safeResume.raw_text?.trim() || "No extracted text available."}
             </pre>
           </section>
-          <section>
-            <h3>Skills</h3>
-            <p>{safeResume.skills?.length ? safeResume.skills.join(", ") : "—"}</p>
+          <section className="resume-skills-section">
+            <div className="resume-skills-header">
+              <h3>Skills</h3>
+              {skillDetails.length > 0 && (
+                <span className="resume-skills-summary">
+                  {skillDetails.length} detected
+                  {genAiSkills.length > 0 && ` · ${genAiSkills.length} GenAI`}
+                  {secondPassSkills.length > 0 && ` · ${secondPassSkills.length} from 2nd pass`}
+                </span>
+              )}
+            </div>
+
+            {skillDetails.length ? (
+              <ul className="resume-skill-list">
+                {skillDetails.map((skill) => {
+                  const tier = confidenceTier(skill.confidence);
+                  const isGenAi = GENAI_SKILLS.has(skill.canonical);
+
+                  return (
+                    <li
+                      key={`${skill.canonical}-${skill.pass}-${skill.source}`}
+                      className={`resume-skill-item resume-skill-item--${tier}${isGenAi ? " resume-skill-item--genai" : ""}`}
+                    >
+                      <div className="resume-skill-top">
+                        <span className="resume-skill-name">{skill.canonical}</span>
+                        <span className={`resume-skill-confidence resume-skill-confidence--${tier}`}>
+                          {formatConfidence(skill.confidence)}
+                        </span>
+                      </div>
+
+                      <div
+                        className={`resume-skill-bar resume-skill-bar--${tier}`}
+                        role="presentation"
+                        style={{ width: `${Math.round(skill.confidence * 100)}%` }}
+                      />
+
+                      <div className="resume-skill-meta">
+                        {isGenAi && <span className="resume-skill-tag resume-skill-tag--genai">GenAI</span>}
+                        <span className="resume-skill-tag">{skill.source}</span>
+                        <span className="resume-skill-tag">
+                          {skill.pass === "first" ? "1st pass" : "2nd pass"}
+                        </span>
+                      </div>
+
+                      {skill.evidence !== skill.canonical && (
+                        <p className="resume-skill-evidence" title={skill.evidence}>
+                          {skill.evidence}
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <p>—</p>
+            )}
           </section>
           <section>
             <h3>Experience</h3>

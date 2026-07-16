@@ -9,6 +9,7 @@ import type {
   ShortlistItem,
   UncertaintyFlag,
 } from "../types";
+import { enrichResumeSkills } from "../utils/resumeExtractor";
 import {
   assertValid,
   validateFitEvaluation,
@@ -48,9 +49,10 @@ export const api = {
       resume: ResumeData;
       missing_flags: string[];
     }>(`/candidates/${candidateId}/resume`, { method: "POST" });
+    const validated = assertValid(validateResume(result.resume), "Resume");
     return {
       ...result,
-      resume: assertValid(validateResume(result.resume), "Resume"),
+      resume: enrichResumeSkills(validated),
     };
   },
 

@@ -80,6 +80,18 @@ export function buildRecruiterTasks(input: BuildRecruiterTasksInput): RecruiterT
     });
   }
 
+  if (input.currentStep === "extraction-preview") {
+    tasks.push({
+      id: "extraction-preview-pending",
+      type: "resume-flag",
+      title: "Confirm extraction preview",
+      detail: "Review section confidence for each resume before fit scoring runs.",
+      priority: "high",
+      actionLabel: "Open extraction preview",
+      step: "extraction-preview",
+    });
+  }
+
   if (input.currentStep === "checkpoint" && !input.workflowStopped) {
     tasks.push({
       id: "checkpoint-pending",
