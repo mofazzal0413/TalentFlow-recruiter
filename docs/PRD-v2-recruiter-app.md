@@ -99,7 +99,7 @@ The following features are implemented in the repo but were added after the init
 | `get_candidates` | Unchanged | Pull candidate list + ATS metadata | `POST /api/jobs/{id}/candidates` (mock) | name, email, stage, tags |
 | `get_resume_text` | Enhanced | Extract resume content; flags missing fields and suspicious text | `POST /api/candidates/{id}/resume` (mock) | skills, experience, education, `suspicious_content` |
 | `get_job_requirements` | Enhanced | Retrieve criteria; supports ATS import override | `GET /api/jobs/{id}/requirements` | role, must_have, nice_to_have |
-| `evaluate_fit` | Unchanged | Compute match score and ranking | `POST /api/jobs/{id}/evaluate` | rank, score, reason, flags |
+| `evaluate_fit` | **Changed post-v2 (2026-07-16)** — now `evaluate_fit_llm` from `talentflow/tools/evaluate_fit_talentflow_agent.py`, aliased to `evaluate_fit` in `orchestrator.py`. Voting LLM screener (2 parallel Claude Sonnet 5 votes per candidate, downgraded to ambiguous on disagreement) instead of the original deterministic keyword/regex matcher. | Compute match score and ranking | `POST /api/jobs/{id}/evaluate` | rank, score, reason, flags |
 | `get_calendar_slots` | **Gated by checkpoint** | Panel availability only after human approval | Called inside `draft_scheduling` (mock) | free/busy blocks, proposed slots |
 | `draft_scheduling` | **New (app layer)** | Generate copyable scheduling email — never sends | `POST /api/jobs/{id}/scheduling` (requires `checkpoint_approved: true`) | drafts with `[DRAFT — NOT SENT]` |
 
@@ -130,6 +130,7 @@ Key additions:
 | Wrong draft email copied | Candidate gets incorrect invite | `[DRAFT — NOT SENT]` label + recruiter edits before send |
 | UI shows injected resume text as instruction | Recruiter misled | `suspicious_content` flag; injection not echoed in drafts |
 | Network/API error mid-workflow | Recruiter stuck mid-flow | Error banner + Retry button per step |
+| **(post-v2) Fit evaluation now makes real paid API calls per candidate** — see §3e | Screening cost/latency scales with candidate volume instead of being free and instant; an outage or rate limit on Anthropic/OpenRouter degrades or blocks evaluation entirely | `vote_log.jsonl` logs real per-candidate cost/tokens/latency from day one; OpenRouter/`gpt-4o` fallback if the Anthropic call fails; keyword matcher (`evaluate_fit.py`) remains in the repo, unmodified, as a fallback if the LLM path needs to be disabled |
 
 ### 3d. Eval Card
 
@@ -146,6 +147,14 @@ Key additions:
 | 1 — Golden (normal) | Checkpoint approved → scheduling API | Jane Doe draft with slots + `[DRAFT — NOT SENT]` | `test_checkpoint_flow.py` |
 | 2 — Golden (edge) | Scheduling without checkpoint | HTTP 403, no drafts | `test_checkpoint_flow.py` |
 | 3 — Adversarial | Alex Rivera injection in resume | Not echoed in scheduling draft email | `test_checkpoint_flow.py` |
+
+### 3e. Fit Evaluation: Voting LLM Screener (post-v2 change, 2026-07-16)
+
+**Not part of the original v2 scope** — documented here for accuracy, same standard as §2d. `orchestrator.py`'s `evaluate_fit` import was swapped from the keyword matcher to `evaluate_fit_llm` (`talentflow/tools/evaluate_fit_talentflow_agent.py`), a ported voting LLM screener (Claude Sonnet 5, 2 parallel votes per candidate, downgraded to `ambiguous` on disagreement). See the README's "Fit evaluation" section for the full contract mapping and checkpoint-reuse explanation.
+
+**Blast radius implication — real-world cost exposure per evaluation.** Every `/api/jobs/{id}/evaluate` call now costs real money and takes real time, scaling with candidate count — this did not exist in the original v2 design, which assumed `evaluate_fit` was free and instant. Measured live across all 26 candidates / 14 jobs in `data/candidates.json` (two full runs, `/api/jobs/{id}/evaluate` end-to-end): **~$0.035/candidate average, ~12s average per-candidate latency**, ~$1.82 total for both 26-candidate runs combined. A single job's evaluation click took 3.4s-31s depending on candidate count and resume length. This is a real operating cost that did not exist under v1/v2's original keyword matcher and should be accounted for before running this against a larger real candidate pool.
+
+**`evaluate_fit.py` (keyword matcher) was not deleted.** It remains in `talentflow/tools/evaluate_fit.py`, fully functional and still what `talentflow/agent.py`'s `run()` (the `python run.py` CLI path and `test_eval_cases.py`) uses — nothing routes through it in the web app/API path anymore, but reverting `orchestrator.py`'s import back to it is a one-line change if the LLM path needs to be disabled (e.g. cost concerns, API outage, or a demo environment with no API key configured). `tests/test_evaluate_fit_wiring.py` asserts which implementation `orchestrator.evaluate_fit` currently resolves to, so this switch (in either direction) can't silently regress unnoticed.
 
 ---
 

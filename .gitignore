@@ -35,7 +35,12 @@ Thumbs.db
 
 # Logs
 *.log
+vote_log.jsonl
+
+# Evaluation result cache (real candidate/eval data — see orchestrator.run_evaluation)
+data/evaluation_cache.json
 
 # Node
 node_modules/
 web/dist/
+_talentflow_agent_reference.py
