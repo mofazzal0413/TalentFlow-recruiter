@@ -46,6 +46,32 @@ python run.py
 pytest tests/ -v
 ```
 
+## Deploying (Render)
+
+`render.yaml` deploys this as a single web service: it builds the React app
+(`web/dist`) during the build step, and `api/main.py` serves those static
+files itself (mounted at `/assets`, with an SPA fallback to `index.html` for
+client-side routes) alongside the `/api/*` endpoints — no separate static
+site, no CORS to configure, one URL for everything.
+
+1. Push this repo to GitHub (already done if you're reading this from there).
+2. In the Render dashboard: **New → Blueprint**, point it at this repo — it
+   picks up `render.yaml` automatically.
+3. Set the `ANTHROPIC_API_KEY` secret in Render's dashboard (it's declared
+   `sync: false` in `render.yaml` on purpose, so it's never read from a
+   committed file — set it manually in Render's Environment tab).
+4. Deploy. First build takes a few minutes (installs Python deps, then
+   `npm install && npm run build`).
+
+Two things worth knowing before relying on this for a live demo:
+- **Free-tier cold start:** a free Render web service spins down after
+  inactivity; the first request after that can take 30-60s to wake back up.
+  Open the URL a few minutes before you need it live.
+- **Ephemeral disk:** `data/*.json` (jobs, candidates, feedback, the
+  evaluation cache) lives on the service's local disk, not a database — it
+  resets on every redeploy. Fine for a demo/portfolio link; not fine as the
+  actual persistence layer for real usage (see `PATH_TO_PRODUCTION.md`).
+
 ## Eval Card
 
 ```bash

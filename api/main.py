@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from talentflow.services.orchestrator import (
@@ -177,3 +180,26 @@ def post_job_feedback(job_id: str, payload: FeedbackRequest) -> dict[str, Any]:
         raise HTTPException(status_code=400, detail=str(error)) from error
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error)) from error
+
+
+# Serve the built React app (web/dist) from this same service so a single
+# Render web service covers both API and UI — no separate static site, no
+# cross-origin requests. Only activates if web/dist exists (i.e. `npm run
+# build` has been run); local dev with `npm run dev` on its own port is
+# completely unaffected since this block is skipped entirely otherwise.
+_WEB_DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
+
+if _WEB_DIST.exists():
+    app.mount("/assets", StaticFiles(directory=_WEB_DIST / "assets"), name="assets")
+
+    @app.get("/{full_path:path}")
+    def serve_frontend(full_path: str) -> FileResponse:
+        """SPA fallback: any non-API, non-asset path returns index.html so
+        BrowserRouter's client-side routes work on a hard refresh or a shared
+        deep link. Registered last so it never shadows the /api/* routes above."""
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not found")
+        candidate = _WEB_DIST / full_path
+        if full_path and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(_WEB_DIST / "index.html")
