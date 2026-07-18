@@ -55,6 +55,34 @@
       "corrected_match_score": null,
       "corrected_meets_bar": null,
       "submitted_at": "2026-07-14T22:52:02.064114+00:00"
+    },
+    {
+      "id": "fb_005",
+      "job_id": "job_006",
+      "candidate_id": "cand_011",
+      "candidate_name": "Olivia Grant",
+      "scorecard": {
+        "technical": 3,
+        "communication": 3
+      },
+      "comment": "this candidte doesn't match 80% i thiink we shoun't go with this",
+      "corrected_match_score": null,
+      "corrected_meets_bar": null,
+      "submitted_at": "2026-07-18T17:33:59.709559+00:00"
+    },
+    {
+      "id": "fb_006",
+      "job_id": "job_006",
+      "candidate_id": "cand_011",
+      "candidate_name": "Olivia Grant",
+      "scorecard": {
+        "technical": 3,
+        "communication": 3
+      },
+      "comment": "",
+      "corrected_match_score": 70,
+      "corrected_meets_bar": null,
+      "submitted_at": "2026-07-18T17:35:01.608585+00:00"
     }
   ]
 }
