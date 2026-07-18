@@ -6,9 +6,16 @@ import "./RecruiterTaskQueue.css";
 interface RecruiterTaskQueueProps {
   tasks: RecruiterTask[];
   onNavigate: (step: WorkflowStep) => void;
+  /**
+   * Some tasks (e.g. "fetch candidates", "continue to evaluation") surface while
+   * you're already on their target step — navigating there is a no-op and the
+   * button looks broken. `actions[task.id]` lets a task trigger the real
+   * side-effecting call instead of just re-setting the current step.
+   */
+  actions?: Record<string, () => void>;
 }
 
-export function RecruiterTaskQueue({ tasks, onNavigate }: RecruiterTaskQueueProps) {
+export function RecruiterTaskQueue({ tasks, onNavigate, actions }: RecruiterTaskQueueProps) {
   const [open, setOpen] = useState(true);
   const aiSteps = WORKFLOW_STEPS.filter((step) => step.owner === "ai").length;
   const aiPercent = Math.round((aiSteps / WORKFLOW_STEPS.length) * 100);
@@ -65,7 +72,14 @@ export function RecruiterTaskQueue({ tasks, onNavigate }: RecruiterTaskQueueProp
                 <button
                   type="button"
                   className="btn btn-secondary btn-sm"
-                  onClick={() => onNavigate(task.step!)}
+                  onClick={() => {
+                    const action = actions?.[task.id];
+                    if (action) {
+                      action();
+                    } else {
+                      onNavigate(task.step!);
+                    }
+                  }}
                 >
                   {task.actionLabel}
                 </button>

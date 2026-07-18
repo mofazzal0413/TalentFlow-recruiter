@@ -17,6 +17,8 @@ interface WorkflowDebugPanelProps {
   jobsError: string | null;
 }
 
+const MINIMIZED_STORAGE_KEY = "talentflow-debug-panel-minimized";
+
 export function WorkflowDebugPanel({
   currentStep,
   selectedJobId,
@@ -30,11 +32,34 @@ export function WorkflowDebugPanel({
   jobsError,
 }: WorkflowDebugPanelProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [minimized, setMinimized] = useState(
+    () => localStorage.getItem(MINIMIZED_STORAGE_KEY) === "true",
+  );
 
   if (!import.meta.env.DEV) return null;
 
-  const steps = getWorkflowStepsForBar();
+  function setMinimizedPersisted(value: boolean) {
+    setMinimized(value);
+    localStorage.setItem(MINIMIZED_STORAGE_KEY, String(value));
+  }
+
   const activeError = error ?? jobsError;
+
+  if (minimized) {
+    return (
+      <button
+        type="button"
+        className="workflow-debug-minimized-badge"
+        onClick={() => setMinimizedPersisted(false)}
+        aria-label="Restore workflow debug panel"
+        title="Restore debug panel"
+      >
+        🐞 Debug{activeError ? " ⚠️" : ""}
+      </button>
+    );
+  }
+
+  const steps = getWorkflowStepsForBar();
 
   return (
     <aside
@@ -43,14 +68,25 @@ export function WorkflowDebugPanel({
     >
       <header className="workflow-debug-header">
         <strong>Debug Panel</strong>
-        <button
-          type="button"
-          className="workflow-debug-toggle"
-          onClick={() => setCollapsed((value) => !value)}
-          aria-expanded={!collapsed}
-        >
-          {collapsed ? "Expand" : "Collapse"}
-        </button>
+        <div className="workflow-debug-header-actions">
+          <button
+            type="button"
+            className="workflow-debug-toggle"
+            onClick={() => setCollapsed((value) => !value)}
+            aria-expanded={!collapsed}
+          >
+            {collapsed ? "Expand" : "Collapse"}
+          </button>
+          <button
+            type="button"
+            className="workflow-debug-toggle workflow-debug-minimize"
+            onClick={() => setMinimizedPersisted(true)}
+            aria-label="Minimize debug panel"
+            title="Minimize"
+          >
+            —
+          </button>
+        </div>
       </header>
 
       {!collapsed && (

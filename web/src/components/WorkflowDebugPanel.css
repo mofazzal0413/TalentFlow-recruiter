@@ -31,6 +31,12 @@
   font-size: 12px;
 }
 
+.workflow-debug-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .workflow-debug-toggle {
   border: none;
   background: #f3f4f6;
@@ -38,6 +44,36 @@
   padding: 2px 8px;
   font-size: 11px;
   cursor: pointer;
+}
+
+.workflow-debug-toggle:hover {
+  background: #e5e7eb;
+}
+
+.workflow-debug-minimize {
+  padding: 2px 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.workflow-debug-minimized-badge {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.workflow-debug-minimized-badge:hover {
+  background: #f9fafb;
 }
 
 .workflow-debug-row {

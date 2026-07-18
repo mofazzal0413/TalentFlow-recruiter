@@ -13,6 +13,7 @@ import { getNextWorkflowStep } from "../config/workflowStateMachine";
 import { logWorkflowTransition } from "../utils/workflowDebugLog";
 import { buildRecruiterTasks } from "../utils/recruiterTasks";
 import { getRoleProgressStatus } from "../utils/roleProgress";
+import { buildExtractionPreview } from "../utils/extractionPreview";
 import type {
   AgentOutputSummary,
   Candidate,
@@ -396,6 +397,40 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     [extractResumeForCandidate],
   );
 
+  /**
+   * Extraction is only auto-confirmed when every candidate's resume parsed with
+   * zero warnings. Anything flagged (low confidence, missing section, etc.) still
+   * routes to the human-reviewed Extraction Preview screen — this only shortcuts
+   * the clean/happy path, it never bypasses a real flag.
+   */
+  const allExtractionsClean = useCallback(
+    (candidateIds: string[], resumeMap: Record<string, ResumeData>) =>
+      candidateIds.length > 0 &&
+      candidateIds.every((id) => {
+        const resume = resumeMap[id];
+        if (!resume) return false;
+        return buildExtractionPreview(resume).warnings.length === 0;
+      }),
+    [],
+  );
+
+  const advancePastExtraction = useCallback(
+    (candidateIds: string[], resumeMap: Record<string, ResumeData>) => {
+      if (allExtractionsClean(candidateIds, resumeMap)) {
+        setExtractionValidated(true);
+        setCurrentStep("evaluation");
+        recordAgentOutput(
+          "extractionPreview",
+          `${candidateIds.length} resume(s) parsed cleanly with no warnings — AI auto-confirmed, skipping straight to fit evaluation.`,
+        );
+      } else {
+        setExtractionValidated(false);
+        setCurrentStep("extraction-preview");
+      }
+    },
+    [allExtractionsClean, recordAgentOutput],
+  );
+
   const continueToEvaluation = useCallback(async () => {
     if (!selectedJobId || !candidates.length) return;
     const allComplete = candidates.every(
@@ -408,14 +443,13 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     try {
       const feedbackResult = await api.getFeedback(selectedJobId);
       setFeedback(feedbackResult.feedback);
-      setExtractionValidated(false);
-      setCurrentStep("extraction-preview");
+      advancePastExtraction(candidates.map((c) => c.id), resumes);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to continue to evaluation.");
     } finally {
       setLoading(false);
     }
-  }, [candidates, resumeStatus, resumes, selectedJobId]);
+  }, [advancePastExtraction, candidates, resumeStatus, resumes, selectedJobId]);
 
   const extractAllResumes = useCallback(async () => {
     if (!selectedJobId || !candidates.length) return;
@@ -432,8 +466,10 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
       try {
         const feedbackResult = await api.getFeedback(selectedJobId);
         setFeedback(feedbackResult.feedback);
-        setExtractionValidated(false);
-        setCurrentStep("extraction-preview");
+        setResumes((latest) => {
+          advancePastExtraction(candidates.map((c) => c.id), latest);
+          return latest;
+        });
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load feedback.");
         allSucceeded = false;
@@ -441,7 +477,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     }
 
     setLoading(false);
-  }, [candidates, extractResumeForCandidate, selectedJobId]);
+  }, [advancePastExtraction, candidates, extractResumeForCandidate, selectedJobId]);
 
   const confirmExtraction = useCallback(() => {
     setExtractionValidated(true);

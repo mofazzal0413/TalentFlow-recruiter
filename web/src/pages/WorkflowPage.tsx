@@ -99,6 +99,14 @@ export function WorkflowPage() {
     setStep(step);
   }
 
+  // Some recruiter tasks (checkpoint approval, extraction preview, scheduling
+  // drafts) only ever appear while you're already on their target step, so
+  // navigating there is a no-op. Scrolling to the panel gives a real, visible
+  // result instead of the button silently doing nothing.
+  function scrollToPanel(id: string) {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   const openRoleCount = jobs.filter((job) => job.status === "open").length;
 
   return (
@@ -184,7 +192,17 @@ export function WorkflowPage() {
           )}
 
           {selectedJob && (
-            <RecruiterTaskQueue tasks={recruiterTasks} onNavigate={goTo} />
+            <RecruiterTaskQueue
+              tasks={recruiterTasks}
+              onNavigate={goTo}
+              actions={{
+                "fetch-candidates": () => void fetchCandidates(),
+                "continue-evaluation": () => void continueToEvaluation(),
+                "extraction-preview-pending": () => scrollToPanel("extraction-preview-panel"),
+                "checkpoint-pending": () => scrollToPanel("checkpoint-panel"),
+                "scheduling-drafts": () => scrollToPanel("scheduling-panel"),
+              }}
+            />
           )}
 
           {selectedJob && currentStep === "job-selection" && !workflowStopped && (

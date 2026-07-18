@@ -90,7 +90,12 @@ export function Sidebar() {
   const activeJob = jobs.find((job) => job.id === selectedJobId);
   const activeSnapshot = selectedJobId ? jobSnapshots[selectedJobId] : undefined;
   const activeProgress = getRoleProgressStatus(activeSnapshot);
-  const canStartWorkflow = Boolean(selectedJobId && activeJob?.status === "open");
+  // A paused/closed role can still have in-flight or checkpoint-pending progress
+  // (e.g. started before it was paused) — the button must stay clickable so that
+  // progress can be reviewed, not just for roles that are currently "open".
+  const canStartWorkflow = Boolean(
+    selectedJobId && (activeJob?.status === "open" || activeProgress !== "not-started"),
+  );
 
   function progressForJob(jobId: string): RoleProgressStatus {
     return getRoleProgressStatus(jobSnapshots[jobId]);
@@ -102,6 +107,16 @@ export function Sidebar() {
       return;
     }
     await startWorkflow(jobId);
+    navigate("/workflow");
+  }
+
+  // The footer button is the one true entry point into a role's workflow — even
+  // for a paused/closed role, if it already has progress the action label says
+  // "Continue Workflow" / "Review Checkpoint", so clicking it must actually
+  // navigate there rather than just re-selecting the role.
+  async function handleFooterAction() {
+    if (!selectedJobId) return;
+    await startWorkflow(selectedJobId);
     navigate("/workflow");
   }
 
@@ -199,7 +214,7 @@ export function Sidebar() {
         <button
           type="button"
           className="btn btn-primary sidebar-start-btn"
-          onClick={() => selectedJobId && void handleRoleSelect(selectedJobId, activeJob?.status !== "open")}
+          onClick={() => void handleFooterAction()}
           disabled={!canStartWorkflow}
         >
           {activeJob ? roleProgressActionLabel(activeProgress) : "Start Workflow"}

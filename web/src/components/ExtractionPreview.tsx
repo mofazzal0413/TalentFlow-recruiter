@@ -110,7 +110,7 @@ export function ExtractionPreview({
   const allChecked = previews.every(({ preview }) => preview !== null);
 
   return (
-    <section className="extraction-preview workflow-step-panel screen">
+    <section id="extraction-preview-panel" className="extraction-preview workflow-step-panel screen">
       <header className="page-header">
         <h1>Extraction Preview</h1>
         <p>

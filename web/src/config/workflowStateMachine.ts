@@ -48,7 +48,7 @@ export const WORKFLOW_STEP_CONFIG: WorkflowStepConfig[] = [
     label: "Extraction Preview",
     type: "human",
     tooltip:
-      "You review each resume broken into Header, Skills, Experience, Projects, and Education blocks with a confidence score before scoring runs.",
+      "AI auto-confirms and skips straight to scoring when every resume parses cleanly with no warnings. If anything is flagged (low confidence, missing section, etc.), it stops here and you review Header, Skills, Experience, Projects, and Education blocks by hand before scoring runs.",
   },
   {
     key: "fitEvaluation",

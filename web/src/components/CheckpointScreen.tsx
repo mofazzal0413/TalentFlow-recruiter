@@ -30,7 +30,7 @@ export function CheckpointScreen({
   onStop,
 }: CheckpointScreenProps) {
   return (
-    <section className="checkpoint workflow-step-panel">
+    <section id="checkpoint-panel" className="checkpoint workflow-step-panel">
       <header className="page-header checkpoint-header">
         <h2>Checkpoint: Review Shortlist</h2>
         <p className="checkpoint-intro">

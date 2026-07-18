@@ -157,7 +157,7 @@ export function SchedulingDraftScreen({ drafts, onFinish }: SchedulingDraftScree
 
   if (!batchValidation.ok) {
     return (
-      <div className="screen scheduling-draft">
+      <div id="scheduling-panel" className="screen scheduling-draft">
         <h2>Scheduling Draft</h2>
         <ErrorBanner message="Scheduling data malformed. Please retry." />
       </div>
@@ -166,7 +166,7 @@ export function SchedulingDraftScreen({ drafts, onFinish }: SchedulingDraftScree
 
   if (!safeDrafts.length) {
     return (
-      <div className="screen scheduling-draft">
+      <div id="scheduling-panel" className="screen scheduling-draft">
         <h2>Scheduling Draft</h2>
         <p className="scheduling-empty">No strong candidates met the bar for scheduling.</p>
         <div className="safety-note">
@@ -181,7 +181,7 @@ export function SchedulingDraftScreen({ drafts, onFinish }: SchedulingDraftScree
   }
 
   return (
-    <div className="screen scheduling-draft">
+    <div id="scheduling-panel" className="screen scheduling-draft">
       <h2>Scheduling Draft</h2>
       <p className="scheduling-draft-intro">
         AI-proposed interview slots and draft outreach — review, copy, and send manually.
