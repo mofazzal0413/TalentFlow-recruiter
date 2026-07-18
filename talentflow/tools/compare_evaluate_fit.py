@@ -9,7 +9,7 @@ Requires ANTHROPIC_API_KEY in .env (see .env.example).
 from __future__ import annotations
 
 from talentflow.tools import evaluate_fit, get_candidates, get_job_requirements, get_resume_text
-from talentflow.tools.evaluate_fit_llm import evaluate_fit_llm
+from talentflow.tools.evaluate_fit_llm_singlecall import evaluate_fit_llm
 
 
 def _print_results(label: str, results: list[dict]) -> None:

@@ -8,7 +8,6 @@ from typing import Any
 
 from talentflow.agent import _clarification_for
 from talentflow.tools import (
-    evaluate_fit,
     get_calendar_slots,
     get_candidates,
     get_feedback,
@@ -16,6 +15,7 @@ from talentflow.tools import (
     get_resume_text,
     submit_feedback,
 )
+from talentflow.tools.evaluate_fit_talentflow_agent import evaluate_fit_llm as evaluate_fit
 from talentflow.tools._data import DATA_DIR, load_json, save_json
 from talentflow.tools.ingest_ats_export import build_requirements_override, parse_ats_export
 from talentflow.validators.agent_output import (
@@ -188,14 +188,50 @@ def save_feedback_correction(
     )
 
 
+_EVALUATION_CACHE_FILENAME = "evaluation_cache.json"
+
+
+def _load_evaluation_cache() -> dict[str, Any]:
+    try:
+        return load_json(_EVALUATION_CACHE_FILENAME)
+    except FileNotFoundError:
+        return {}
+
+
 def run_evaluation(
     candidates: list[dict[str, Any]],
     resumes: dict[str, dict[str, Any]],
     job_id: str,
+    force_refresh: bool = False,
 ) -> dict[str, Any]:
+    """Ranks candidates via evaluate_fit (the live voting LLM screener — see
+    evaluate_fit_talentflow_agent.py), then applies cheap, deterministic
+    per-request logic (feedback corrections, uncertainty flags, shortlist
+    validation) on top.
+
+    Only the expensive evaluate_fit call itself is cached, keyed by job_id,
+    in evaluation_cache.json (gitignored — holds real candidate resume/eval
+    data) — not the whole result — so a recruiter's feedback corrections
+    submitted after a cached evaluation still show up on every request
+    rather than going stale. force_refresh=True (or no prior cache entry
+    for this job_id) re-runs evaluate_fit live and overwrites the cache.
+    """
     job = _get_job(job_id)
     job_requirements = get_job_requirements(job_id)
-    ranked = evaluate_fit(candidates, resumes, job_requirements)
+
+    cache = _load_evaluation_cache()
+    cached_entry = cache.get(job_id)
+
+    if cached_entry is not None and not force_refresh:
+        ranked = cached_entry["ranked"]
+        cache_info = {"cached": True, "evaluated_at": cached_entry["evaluated_at"]}
+    else:
+        ranked = evaluate_fit(candidates, resumes, job_requirements)
+        evaluated_at = datetime.now(UTC).isoformat()
+        cache[job_id] = {"evaluated_at": evaluated_at, "ranked": ranked}
+        save_json(_EVALUATION_CACHE_FILENAME, cache)
+        cache_info = {"cached": False, "evaluated_at": evaluated_at}
+
     ranked = _apply_feedback_corrections(ranked, get_feedback(job_id=job_id))
 
     uncertainty_flags = []
@@ -226,6 +262,7 @@ def run_evaluation(
         "borderline_candidates": borderline_candidates,
         "uncertainty_flags": uncertainty_flags,
         "strong_candidates": strong_candidates,
+        "evaluation_cache": cache_info,
     }
 
 

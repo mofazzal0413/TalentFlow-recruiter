@@ -42,6 +42,7 @@ app.add_middleware(
 class EvaluateRequest(BaseModel):
     candidates: list[dict[str, Any]]
     resumes: dict[str, dict[str, Any]]
+    force_refresh: bool = False
 
 
 class SchedulingRequest(BaseModel):
@@ -129,7 +130,7 @@ async def post_ats_import(job_id: str, file: UploadFile = File(...)) -> dict[str
 @app.post("/api/jobs/{job_id}/evaluate")
 def post_evaluate(job_id: str, payload: EvaluateRequest) -> dict[str, Any]:
     try:
-        return run_evaluation(payload.candidates, payload.resumes, job_id)
+        return run_evaluation(payload.candidates, payload.resumes, job_id, force_refresh=payload.force_refresh)
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
     except Exception as error:
