@@ -116,6 +116,16 @@ _MODEL_ID = "claude-sonnet-5"
 _OPENROUTER_FALLBACK_MODEL_ID = "openrouter/openai/gpt-4o"
 _N_VOTES = 2
 
+# Evaluating a batch of candidates fires _N_VOTES calls per candidate, all
+# via asyncio.gather — e.g. 4 candidates * 2 votes = 8 simultaneous Anthropic
+# calls with no cap. Low/free-tier API keys commonly have single-digit
+# requests-per-minute limits, so an uncapped burst like that reliably trips
+# rate limits on exactly the kind of key this demo runs on. Capping global
+# concurrency keeps real wall-clock latency roughly the same (votes are fast)
+# while avoiding self-inflicted 429s.
+_MAX_CONCURRENT_CALLS = 3
+_call_semaphore = asyncio.Semaphore(_MAX_CONCURRENT_CALLS)
+
 
 def _get_anthropic_model(model_id: str) -> LiteLLMModel:
     # claude-sonnet-5 rejects temperature=0 outright (only temperature=1 is
@@ -128,6 +138,10 @@ def _get_anthropic_model(model_id: str) -> LiteLLMModel:
         model_id=model_id,
         params={"max_tokens": 16384},
     )
+
+
+def _openrouter_available() -> bool:
+    return bool(os.environ.get("OPENROUTER_API_KEY"))
 
 
 def _get_openrouter_fallback_model() -> LiteLLMModel:
@@ -144,8 +158,12 @@ def _get_openrouter_fallback_model() -> LiteLLMModel:
 class _FallbackModel:
     """Wraps a primary model with a fallback model at CALL time. If the
     primary model's stream() raises before yielding anything (auth failure,
-    connection error, etc.), transparently retries the same request against
-    the OpenRouter fallback instead of failing the whole screening."""
+    connection error, rate limit, etc.), transparently retries the same
+    request against the OpenRouter fallback instead of failing the whole
+    screening — but only when OPENROUTER_API_KEY is actually configured.
+    Without it, the original primary-model error is re-raised as-is so a
+    deploy missing the optional fallback key surfaces the real Anthropic
+    error instead of an unrelated crash about the fallback."""
 
     def __init__(self, primary, build_fallback):
         self._primary = primary
@@ -161,6 +179,8 @@ class _FallbackModel:
         except StopAsyncIteration:
             return
         except Exception:
+            if not _openrouter_available():
+                raise
             fallback = self._build_fallback()
             async for event in fallback.stream(*args, **kwargs):
                 yield event
@@ -173,10 +193,17 @@ class _FallbackModel:
 
 def _get_model(model_id: str):
     """Anthropic is the primary model. If ANTHROPIC_API_KEY isn't set, this
-    skips straight to the OpenRouter/gpt-4o fallback without even attempting
-    Anthropic. If the key is set, Anthropic is tried first; if the actual
-    model call fails, _FallbackModel transparently retries with OpenRouter."""
+    skips straight to the OpenRouter/gpt-4o fallback (only if that key is
+    configured — otherwise fails fast with a clear message instead of a
+    stray KeyError). If ANTHROPIC_API_KEY is set, Anthropic is tried first;
+    if the actual model call fails, _FallbackModel retries with OpenRouter
+    only when that key is present, and otherwise re-raises the real error."""
     if not os.environ.get("ANTHROPIC_API_KEY"):
+        if not _openrouter_available():
+            raise RuntimeError(
+                "No LLM API key configured — set ANTHROPIC_API_KEY "
+                "(or OPENROUTER_API_KEY as a fallback) in the environment."
+            )
         return _get_openrouter_fallback_model()
 
     return _FallbackModel(
@@ -207,7 +234,8 @@ async def _run_screening_async(resume_text: str, job_description: str, model_id:
     loops in different threads, so every vote stays on one event loop."""
     screener = Agent(model=_get_model(model_id), system_prompt=_SCREENING_PROMPT, callback_handler=None)
     prompt = f"JOB DESCRIPTION:\n{job_description}\n\nRESUME:\n{resume_text}"
-    return await screener.invoke_async(prompt)
+    async with _call_semaphore:
+        return await screener.invoke_async(prompt)
 
 
 def _estimate_cost_usd(usage: dict, model_id: str) -> float:
